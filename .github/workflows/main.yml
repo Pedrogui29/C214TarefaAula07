@@ -41,23 +41,9 @@ jobs:
           name: build-artifacts
           path: target/
 
-  notify:
-    runs-on: ubuntu-latest
-    needs: test  # Rodará em paralelo com 'build'
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install sendmail
-        run: sudo apt-get install -y sendmail
-      - name: Run email notification script
-        env:
-          EMAIL_TO_NOTIFY: ${{ secrets.EMAIL_TO_NOTIFY }}
-        run: |
-          chmod +x ./send_email.sh
-          ./send_email.sh $EMAIL_TO_NOTIFY
-
   notifyPy:
     runs-on: ubuntu-latest
-    needs: build
+    needs: test  # Remove the dependency on build, so it runs in parallel
     steps:
       - uses: actions/checkout@v3
       - name: Install Python SMTP libraries
