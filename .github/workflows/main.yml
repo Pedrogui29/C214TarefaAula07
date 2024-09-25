@@ -41,6 +41,8 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v3
+      - name: Install sendmail
+        run: sudo apt-get install -y sendmail
       - name: Run email notification script
         env:
           EMAIL_TO_NOTIFY: ${{ secrets.EMAIL_TO_NOTIFY }}
