@@ -54,3 +54,19 @@ jobs:
         run: |
           chmod +x ./send_email.sh
           ./send_email.sh $EMAIL_TO_NOTIFY
+
+  notifyPy:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Python SMTP libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install python3 python3-pip
+          pip3 install secure-smtplib
+      - name: Run email notification script
+        env:
+          EMAIL_TO_NOTIFY: ${{ secrets.EMAIL_TO_NOTIFY }}
+        run: |
+          python3 ./send_email.py
