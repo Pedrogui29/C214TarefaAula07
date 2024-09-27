@@ -18,6 +18,16 @@ Este projeto exemplifica a implementação de um pipeline de CI/CD usando **GitH
   - `EMAIL_USERNAME`: Email remetente (por exemplo, Gmail).
   - `EMAIL_PASSWORD`: Senha de aplicativo do Gmail ou de outro provedor SMTP.
 
+## Configuração do Pipeline
+
+O pipeline está configurado para rodar automaticamente no GitHub Actions sempre que houver um push na branch main. E possui as seguintes etapas:
+
+- **Testes**: Executa os testes do projeto
+- **Build**: Empacota o projeto em um arquivo .jar após a execução dos testes.
+- **Notificação por Email**: Envia um email com o status do pipeline (sucesso ou falha) usando um script em Python.
+
+As etapas de Build e Notificação são executadas em paralelo após a etapa de Testes.
+
 ## Como Rodar o Projeto Localmente
 
 1. Clone o repositório e vá até o diretório do projeto:
