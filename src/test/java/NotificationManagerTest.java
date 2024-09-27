@@ -4,6 +4,7 @@ import org.example.NotificationService;
 import org.example.SmsNotificationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
 
 import static org.mockito.ArgumentMatchers.anyString;
@@ -95,6 +96,40 @@ class NotificationManagerTest {
         manager = new NotificationManager(mockSmsService);
         manager.notify("SMS Service Selected");
         verify(mockSmsService).sendNotification("SMS Service Selected");
+    }
+
+    @Test
+    void testDuplicateNotification() {
+        // teste para mensagens duplicadas
+        manager.notify("Duplicate notification");
+        manager.notify("Duplicate notification");
+        verify(mockEmailService, times(2)).sendNotification("Duplicate notification");
+    }
+
+    @Test
+    void testNotificationOrder() {
+        // teste que verifica a ordem das notificacoes
+        InOrder inOrder = inOrder(mockEmailService);
+        manager.notify("First notification");
+        manager.notify("Second notification");
+        inOrder.verify(mockEmailService).sendNotification("First notification");
+        inOrder.verify(mockEmailService).sendNotification("Second notification");
+    }
+
+    @Test
+    void testNotificationWithSpecialCharacters() {
+        // teste para notificacao com caracteres especiais
+        String specialMessage = "Notificação com caracteres especiais: ç,ã,ê,û,!,ф,в,и,д,ж";
+        manager.notify(specialMessage);
+        verify(mockEmailService).sendNotification(specialMessage);
+    }
+
+    @Test
+    void testNotificationWithLongMessage() {
+        // teste para notificacao com mensagens muitos grandes
+        String longMessage = "a".repeat(5000); // Mensagem longa de 5000 caracteres
+        manager.notify(longMessage);
+        verify(mockEmailService).sendNotification(longMessage);
     }
 
 }
