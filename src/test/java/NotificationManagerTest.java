@@ -5,6 +5,8 @@ import org.example.SmsNotificationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 class NotificationManagerTest {
@@ -66,4 +68,33 @@ class NotificationManagerTest {
         verify(mockEmailService).sendNotification("Notification 1");
         verify(mockEmailService).sendNotification("Notification 2");
     }
+
+    @Test
+    void testEmptyNotificationMessage() {
+        // teste de notificacao com mensagem vazia
+        manager.notify("");
+        verify(mockEmailService).sendNotification("");
+    }
+
+    @Test
+    void testMultipleSmsNotifications() {
+        // teste de varias notificacoes de sms
+        manager = new NotificationManager(mockSmsService);
+        manager.notify("SMS 1");
+        manager.notify("SMS 2");
+        verify(mockSmsService).sendNotification("SMS 1");
+        verify(mockSmsService).sendNotification("SMS 2");
+    }
+
+    @Test
+    void testServiceSelection() {
+        // verifica se o notify() usa o service corretamente
+        manager.notify("Checking service selection");
+        verify(mockEmailService).sendNotification("Checking service selection");
+        
+        manager = new NotificationManager(mockSmsService);
+        manager.notify("SMS Service Selected");
+        verify(mockSmsService).sendNotification("SMS Service Selected");
+    }
+
 }
