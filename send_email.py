@@ -6,9 +6,12 @@ from email.mime.text import MIMEText
 email_username = os.getenv('EMAIL_USERNAME')
 email_password = os.getenv('EMAIL_PASSWORD')
 recipient = os.getenv('EMAIL_TO_NOTIFY')
+pipeline_status = os.getenv('PIPELINE_STATUS')
+
 if recipient:
     # Define email content
-    msg = MIMEText('Pipeline executed successfully!')
+    msg_content = f'Pipeline executed with status: {pipeline_status}'
+    msg = MIMEText(msg_content)
     msg['Subject'] = 'CI/CD Pipeline Notification'
     msg['From'] = email_username  # Insira seu email de envio aqui
     msg['To'] = recipient

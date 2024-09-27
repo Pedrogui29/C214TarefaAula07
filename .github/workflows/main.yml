@@ -56,5 +56,6 @@ jobs:
           EMAIL_TO_NOTIFY: ${{ secrets.EMAIL_TO_NOTIFY }}
           EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          PIPELINE_STATUS: ${{ job.status }}  # Variável que pega o status do pipeline
         run: |
           python3 ./send_email.py
