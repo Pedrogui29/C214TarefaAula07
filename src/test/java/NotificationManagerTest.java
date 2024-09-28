@@ -41,7 +41,7 @@ class NotificationManagerTest {
 
     @Test
     void testNoNotificationSent() {
-        // Verifying no interaction if notify is not called
+
         verify(mockEmailService, never()).sendNotification(anyString());
     }
 
